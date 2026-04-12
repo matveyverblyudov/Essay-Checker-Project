@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-проверка эссе</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f6f7fb;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      margin-bottom: 24px;
+    }
+
+    h1, h2 {
+      margin-top: 0;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    .chat-wrapper {
+      min-height: 650px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+    }
+
+    flowise-fullchatbot {
+      display: block;
+      width: 100%;
+      height: 650px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f3f4f6;
+    }
+
+    .total {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 16px;
+    }
+
+    .recommendations {
+      margin-top: 16px;
+      padding: 16px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 12px;
+    }
+
+    .recommendations h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>AI-проверка школьных эссе</h1>
+      <p>
+        Вставьте текст эссе в чат ниже. Система проверит работу по дескрипторам,
+        выставит баллы по каждому критерию и даст рекомендации по улучшению.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Чат-бот для проверки эссе</h2>
+      <div class="chat-wrapper">
+        <flowise-fullchatbot></flowise-fullchatbot>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Пример формата результата</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Критерий</th>
+            <th>Балл</th>
+            <th>Комментарий</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Соответствие теме</td>
+            <td>5/5</td>
+            <td>Тема раскрыта полно и точно.</td>
+          </tr>
+          <tr>
+            <td>Структура эссе</td>
+            <td>4/5</td>
+            <td>Есть вступление, основная часть и заключение, но переходы можно усилить.</td>
+          </tr>
+          <tr>
+            <td>Позиция автора</td>
+            <td>5/5</td>
+            <td>Авторская позиция выражена ясно.</td>
+          </tr>
+          <tr>
+            <td>Логика и последовательность</td>
+            <td>4/5</td>
+            <td>Мысли изложены последовательно, местами не хватает связок.</td>
+          </tr>
+          <tr>
+            <td>Аргументация</td>
+            <td>4/5</td>
+            <td>Есть два аргумента, но один пример можно раскрыть глубже.</td>
+          </tr>
+          <tr>
+            <td>Грамотность речи</td>
+            <td>5/5</td>
+            <td>Серьёзных ошибок почти нет.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="total">Общий балл: 27/30</div>
+
+      <div class="recommendations">
+        <h3>Рекомендации</h3>
+        <ol>
+          <li>Усилить переходы между аргументами.</li>
+          <li>Добавить более точный пример во втором аргументе.</li>
+          <li>Сделать заключение более обобщающим.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
+
+    Chatbot.initFull({
+      chatflowid: "5d74f1be-56bf-4b59-aaea-e88eaead8da2",
+      apiHost: "https://cloud.flowiseai.com",
+    });
+  </script>
+</body>
+</html>
