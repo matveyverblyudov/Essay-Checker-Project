@@ -24,10 +24,6 @@
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -341,6 +337,35 @@
       line-height: 1;
     }
 
+    .summary-box {
+      margin-top: 18px;
+      background: var(--green-soft);
+      border: 1px solid #cfe5a6;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .summary-box h3 {
+      margin: 0 0 10px;
+      color: var(--brown);
+      font-size: 20px;
+    }
+
+    .summary-box p {
+      margin: 0 0 10px;
+      color: #555;
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #555;
+    }
+
+    .summary-list li + li {
+      margin-top: 6px;
+    }
+
     .table-wrap {
       margin-top: 18px;
       overflow-x: auto;
@@ -374,36 +399,7 @@
       font-size: 15px;
     }
 
-    .summary-box {
-      margin-top: 18px;
-      background: var(--green-soft);
-      border: 1px solid #cfe5a6;
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .summary-box h3 {
-      margin: 0 0 10px;
-      color: var(--brown);
-      font-size: 20px;
-    }
-
-    .summary-box p {
-      margin: 0 0 10px;
-      color: #555;
-    }
-
-    .summary-box ul {
-      margin: 0;
-      padding-left: 18px;
-      color: #555;
-    }
-
-    .summary-box li + li {
-      margin-top: 6px;
-    }
-
-    .prompt-box {
+    .recommend-box {
       margin-top: 18px;
       background: #fcfcfa;
       border: 1px solid var(--border);
@@ -411,23 +407,25 @@
       padding: 18px;
     }
 
-    .prompt-box h3 {
-      margin: 0 0 12px;
+    .recommend-box h3 {
+      margin: 0 0 10px;
       color: var(--brown);
-      font-size: 18px;
+      font-size: 20px;
     }
 
-    .prompt-box pre {
+    .recommend-list {
       margin: 0;
-      background: white;
-      border: 1px solid var(--border-soft);
-      border-radius: 14px;
-      padding: 14px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      color: #5b5b5b;
-      font-size: 13px;
-      line-height: 1.6;
+      padding-left: 18px;
+      color: #555;
+    }
+
+    .recommend-list li + li {
+      margin-top: 6px;
+    }
+
+    .placeholder {
+      color: var(--muted);
+      font-style: italic;
     }
 
     footer {
@@ -560,7 +558,7 @@
           </div>
           <div class="step">
             <div class="step-num">3</div>
-            <p>Система возвращает summary, таблицу баллов и рекомендации по улучшению.</p>
+            <p>Система возвращает summary, таблицу баллов и рекомендации.</p>
           </div>
         </div>
       </div>
@@ -588,21 +586,15 @@
         </div>
         <div class="score-box">
           <small>Общий балл</small>
-          <strong>27/30</strong>
+          <strong id="totalScore">—</strong>
         </div>
       </div>
 
       <div class="summary-box">
         <h3>Краткая обратная связь</h3>
-        <p>
-          Работа в целом демонстрирует понимание темы и уверенную авторскую позицию,
-          однако требует доработки в части аргументации и связности между абзацами.
-        </p>
-        <ul>
-          <li>Сильная сторона: тема раскрыта и позиция автора выражена ясно.</li>
-          <li>Зона роста: один из аргументов нуждается в более точном примере и пояснении.</li>
-          <li>Рекомендация: усилить переходы между частями эссе и сделать вывод более обобщающим.</li>
-        </ul>
+        <div id="summaryContent" class="placeholder">
+          После проверки здесь появится краткий итог по работе ученика.
+        </div>
       </div>
 
       <div class="table-wrap">
@@ -614,41 +606,20 @@
               <th>Комментарий</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="feedbackTableBody">
             <tr>
-              <td>Соответствие теме</td>
-              <td>5/5</td>
-              <td>Тема раскрыта полно и точно.</td>
-            </tr>
-            <tr>
-              <td>Структура эссе</td>
-              <td>4/5</td>
-              <td>Есть вступление, основная часть и заключение, но переходы можно усилить.</td>
-            </tr>
-            <tr>
-              <td>Позиция автора</td>
-              <td>5/5</td>
-              <td>Авторская позиция выражена ясно.</td>
-            </tr>
-            <tr>
-              <td>Логика и последовательность</td>
-              <td>4/5</td>
-              <td>Мысли изложены последовательно, местами не хватает связок.</td>
-            </tr>
-            <tr>
-              <td>Аргументация</td>
-              <td>4/5</td>
-              <td>Есть два аргумента, но один пример можно раскрыть глубже.</td>
-            </tr>
-            <tr>
-              <td>Грамотность речи</td>
-              <td>5/5</td>
-              <td>Серьёзных ошибок почти нет.</td>
+              <td colspan="3" class="placeholder">После ответа бота здесь появится таблица оценивания.</td>
             </tr>
           </tbody>
         </table>
       </div>
 
+      <div class="recommend-box">
+        <h3>Рекомендации</h3>
+        <ol id="recommendationsList" class="recommend-list">
+          <li class="placeholder">После проверки здесь появятся рекомендации по улучшению эссе.</li>
+        </ol>
+      </div>
     </aside>
   </main>
 
@@ -659,9 +630,197 @@
   <script type="module">
     import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
 
+    const totalScoreEl = document.getElementById("totalScore");
+    const summaryContentEl = document.getElementById("summaryContent");
+    const feedbackTableBodyEl = document.getElementById("feedbackTableBody");
+    const recommendationsListEl = document.getElementById("recommendationsList");
+
+    function escapeHtml(text) {
+      return String(text ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function getLatestBotText(messages) {
+      if (!Array.isArray(messages) || messages.length === 0) return "";
+
+      const reversed = [...messages].reverse();
+
+      for (const msg of reversed) {
+        const text =
+          msg?.message ??
+          msg?.content ??
+          msg?.text ??
+          msg?.output ??
+          "";
+
+        const role =
+          msg?.type ??
+          msg?.role ??
+          msg?.author ??
+          "";
+
+        if (
+          typeof text === "string" &&
+          text.trim() &&
+          !["user", "human"].includes(String(role).toLowerCase())
+        ) {
+          return text.trim();
+        }
+      }
+
+      return "";
+    }
+
+    function parseMarkdownTable(tableText) {
+      const lines = tableText
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
+
+      const dataLines = lines.filter((line) => {
+        if (!line.includes("|")) return false;
+        const compact = line.replace(/\s/g, "");
+        if (compact === "|---|---:|---|" || compact === "|---|---|---|") return false;
+        if (/^\|?\s*-+\s*\|/.test(line)) return false;
+        return true;
+      });
+
+      if (dataLines.length < 2) return [];
+
+      const rows = dataLines.slice(1).map((line) => {
+        let cleaned = line;
+        if (cleaned.startsWith("|")) cleaned = cleaned.slice(1);
+        if (cleaned.endsWith("|")) cleaned = cleaned.slice(0, -1);
+
+        return cleaned.split("|").map((cell) => cell.trim());
+      });
+
+      return rows.filter((row) => row.length >= 3);
+    }
+
+    function parseBotResponse(text) {
+      if (!text) {
+        return {
+          summary: "",
+          rows: [],
+          total: "",
+          recommendations: []
+        };
+      }
+
+      const normalized = text.replace(/\r/g, "").trim();
+
+      const totalMatch = normalized.match(/Общий балл:\s*([0-9]+\s*\/\s*[0-9]+)/i);
+      const total = totalMatch ? totalMatch[1].replace(/\s+/g, "") : "";
+
+      const recommendationsMatch = normalized.match(/Рекомендации:\s*([\s\S]*)$/i);
+      const recommendationsBlock = recommendationsMatch ? recommendationsMatch[1].trim() : "";
+
+      const recommendations = recommendationsBlock
+        ? recommendationsBlock
+            .split("\n")
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((line) => line.replace(/^\d+\.\s*/, "").trim())
+            .filter(Boolean)
+        : [];
+
+      const tableStart = normalized.indexOf("| Критерий |");
+      let summary = "";
+      let tableBlock = "";
+
+      if (tableStart >= 0) {
+        summary = normalized.slice(0, tableStart).trim();
+        const afterTableStart = normalized.slice(tableStart);
+
+        if (recommendationsMatch) {
+          tableBlock = afterTableStart.split(/Общий балл:/i)[0].trim();
+        } else {
+          tableBlock = afterTableStart.trim();
+        }
+      } else {
+        summary = normalized;
+      }
+
+      const rows = parseMarkdownTable(tableBlock);
+
+      return {
+        summary,
+        rows,
+        total,
+        recommendations
+      };
+    }
+
+    function renderSummary(summaryText) {
+      if (!summaryText) {
+        summaryContentEl.innerHTML = '<div class="placeholder">После проверки здесь появится краткий итог по работе ученика.</div>';
+        return;
+      }
+
+      const paragraphs = summaryText
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
+
+      summaryContentEl.innerHTML = paragraphs
+        .map((p) => `<p>${escapeHtml(p)}</p>`)
+        .join("");
+    }
+
+    function renderTable(rows) {
+      if (!rows.length) {
+        feedbackTableBodyEl.innerHTML = '<tr><td colspan="3" class="placeholder">Не удалось разобрать таблицу из ответа бота.</td></tr>';
+        return;
+      }
+
+      feedbackTableBodyEl.innerHTML = rows
+        .map((row) => {
+          const [criterion = "", score = "", comment = ""] = row;
+          return `
+            <tr>
+              <td>${escapeHtml(criterion)}</td>
+              <td>${escapeHtml(score)}</td>
+              <td>${escapeHtml(comment)}</td>
+            </tr>
+          `;
+        })
+        .join("");
+    }
+
+    function renderRecommendations(recommendations) {
+      if (!recommendations.length) {
+        recommendationsListEl.innerHTML = '<li class="placeholder">Рекомендации появятся после первой проверки.</li>';
+        return;
+      }
+
+      recommendationsListEl.innerHTML = recommendations
+        .map((item) => `<li>${escapeHtml(item)}</li>`)
+        .join("");
+    }
+
+    function updateFeedbackPanel(botText) {
+      const parsed = parseBotResponse(botText);
+
+      renderSummary(parsed.summary);
+      renderTable(parsed.rows);
+      renderRecommendations(parsed.recommendations);
+      totalScoreEl.textContent = parsed.total || "—";
+    }
+
     Chatbot.initFull({
       chatflowid: "5d74f1be-56bf-4b59-aaea-e88eaead8da2",
       apiHost: "https://cloud.flowiseai.com",
+      observersConfig: {
+        observeMessages: (messages) => {
+          const latestBotText = getLatestBotText(messages);
+          if (latestBotText) {
+            updateFeedbackPanel(latestBotText);
+          }
+        }
+      }
     });
   </script>
 </body>
