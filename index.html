@@ -2,194 +2,689 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NIS — Проверка эссе</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NIS — AI-проверка эссе</title>
   <style>
+    :root {
+      --bg: #f7f7f2;
+      --card: #ffffff;
+      --border: #d9dccf;
+      --border-soft: #e7e9df;
+      --text: #4b4b4b;
+      --muted: #6c6c6c;
+      --green: #7bc51f;
+      --green-soft: #eef7df;
+      --green-head: #dfe8cb;
+      --brown: #8b5a34;
+      --shadow: 0 10px 28px rgba(0, 0, 0, 0.05);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f7f7f2;
-      color: #4b4b4b;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
     }
 
     header {
-      background: white;
-      border-bottom: 1px solid #d9dccf;
-      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
     }
 
     .header-inner {
-      max-width: 1100px;
-      margin: auto;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 16px;
     }
 
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
     .logo {
-      height: 60px;
+      height: 62px;
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      min-width: 0;
     }
 
     .school-title {
       font-size: 20px;
-      font-weight: bold;
-      color: #8b5a34;
+      font-weight: 700;
+      color: var(--brown);
+      line-height: 1.2;
     }
 
-    .subtitle {
+    .school-subtitle {
       font-size: 13px;
-      color: #6c6c6c;
+      color: var(--muted);
+      margin-top: 4px;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
+    .header-note {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: right;
+      max-width: 360px;
+    }
+
+    .hero-wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 20px 12px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(123, 197, 31, 0.10), rgba(139, 90, 52, 0.10));
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.8fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--green);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      margin: 0 0 14px;
+      color: var(--brown);
+      font-size: 42px;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #5f5f5f;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 720px;
+    }
+
+    .hero-stats {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat {
+      background: var(--bg);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .stat.big {
+      grid-column: 1 / -1;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--brown);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 20px 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
     }
 
     .card {
-      background: white;
-      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 24px;
-      margin-bottom: 24px;
-      border: 1px solid #d9dccf;
+      box-shadow: var(--shadow);
     }
 
-    h1 {
-      color: #8b5a34;
+    .section-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--green);
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
-    h2 {
-      color: #8b5a34;
+    .section-title {
+      margin: 0 0 12px;
+      color: var(--brown);
+      font-size: 30px;
+      line-height: 1.2;
     }
 
-    .chat {
-      height: 650px;
-      border-radius: 16px;
+    .section-text {
+      color: #626262;
+      margin: 0;
+      line-height: 1.75;
+    }
+
+    .steps {
+      margin-top: 18px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .steps h3 {
+      margin: 0 0 12px;
+      color: var(--brown);
+      font-size: 18px;
+    }
+
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .step {
+      background: white;
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .step-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .chat-shell {
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
       overflow: hidden;
-      border: 1px solid #d9dccf;
+      background: white;
+    }
+
+    .chat-head {
+      padding: 16px 18px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .chat-head h3 {
+      margin: 0;
+      color: var(--brown);
+      font-size: 18px;
+    }
+
+    .chat-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .badge {
+      background: var(--brown);
+      color: white;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .chat-area {
+      height: 700px;
+      background: white;
     }
 
     flowise-fullchatbot {
-      width: 100%;
-      height: 650px;
       display: block;
+      width: 100%;
+      height: 700px;
+    }
+
+    .score-box {
+      display: inline-block;
+      background: var(--brown);
+      color: white;
+      padding: 14px 16px;
+      border-radius: 18px;
+      text-align: right;
+      min-width: 140px;
+    }
+
+    .score-box small {
+      display: block;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .score-box strong {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .table-wrap {
+      margin-top: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: white;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 560px;
+    }
+
+    thead {
+      background: var(--green-head);
     }
 
     th {
-      background: #eef7df;
       text-align: left;
-      padding: 12px;
+      padding: 14px 16px;
+      color: #4d4d4d;
+      font-size: 15px;
     }
 
     td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
+      padding: 14px 16px;
+      border-top: 1px solid #eceee4;
+      color: #575757;
+      vertical-align: top;
+      font-size: 15px;
     }
 
-    .total {
-      margin-top: 16px;
-      font-size: 22px;
-      font-weight: bold;
-      color: #8b5a34;
+    .summary-box {
+      margin-top: 18px;
+      background: var(--green-soft);
+      border: 1px solid #cfe5a6;
+      border-radius: 18px;
+      padding: 18px;
     }
 
-    .recommend {
-      margin-top: 16px;
-      background: #eef7df;
-      padding: 16px;
-      border-radius: 12px;
+    .summary-box h3 {
+      margin: 0 0 10px;
+      color: var(--brown);
+      font-size: 20px;
+    }
+
+    .summary-box p {
+      margin: 0 0 10px;
+      color: #555;
+    }
+
+    .summary-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #555;
+    }
+
+    .summary-box li + li {
+      margin-top: 6px;
+    }
+
+    .prompt-box {
+      margin-top: 18px;
+      background: #fcfcfa;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .prompt-box h3 {
+      margin: 0 0 12px;
+      color: var(--brown);
+      font-size: 18px;
+    }
+
+    .prompt-box pre {
+      margin: 0;
+      background: white;
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 14px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      color: #5b5b5b;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    footer {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px 36px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .main {
+        grid-template-columns: 1fr;
+      }
+
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .header-note {
+        text-align: left;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        padding: 22px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .section-title {
+        font-size: 26px;
+      }
+
+      .step-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-area,
+      flowise-fullchatbot {
+        height: 620px;
+      }
+
+      .logo {
+        height: 52px;
+      }
+
+      .school-title {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
-
 <body>
-
-<header>
-  <div class="header-inner">
-    <!-- Добавь logo.png в репозиторий -->
-    <img src="logo.png" class="logo" />
-
-    <div>
-      <div class="school-title">Nazarbayev Intellectual Schools</div>
-      <div class="subtitle">Система оценки эссе по дескрипторам</div>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <img src="logo.png" alt="NIS logo" class="logo" />
+        <div class="brand-text">
+          <div class="school-title">Nazarbayev Intellectual Schools</div>
+          <div class="school-subtitle">Интеллектуальная система оценивания эссе</div>
+        </div>
+      </div>
+      <div class="header-note">
+        Академическая честность • Структура • Аргументация • Грамотность
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<div class="container">
+  <section class="hero-wrap">
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">AI-проверка эссе по школьным дескрипторам</div>
+          <h1>Платформа для проверки школьных эссе</h1>
+          <p>
+            Ученик вставляет эссе в чат, а система оценивает работу по дескрипторам,
+            показывает таблицу баллов и даёт краткую содержательную обратную связь
+            по сильным сторонам, ошибкам и направлениям для улучшения.
+          </p>
+        </div>
 
-  <div class="card">
-    <h1>AI-проверка школьных эссе</h1>
-    <p>
-      Вставьте текст эссе в чат ниже. Система автоматически проверит работу,
-      выставит баллы и даст рекомендации.
-    </p>
-  </div>
-
-  <div class="card">
-    <h2>Чат-бот проверки</h2>
-
-    <div class="chat">
-      <flowise-fullchatbot></flowise-fullchatbot>
+        <div class="hero-stats">
+          <div class="stats-grid">
+            <div class="stat">
+              <div class="stat-value">6</div>
+              <div class="stat-label">критериев оценки</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">30</div>
+              <div class="stat-label">максимальный балл</div>
+            </div>
+            <div class="stat big">
+              <div class="stat-value" style="font-size: 18px; margin-bottom: 8px;">Формат проверки</div>
+              <div class="stat-label">
+                Тема • Структура • Позиция • Логика • Аргументы • Грамотность
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="card">
-    <h2>Пример результата</h2>
+  <main class="main">
+    <section class="card">
+      <div class="section-label">Проверка работ</div>
+      <h2 class="section-title">Чат-бот для учеников</h2>
+      <p class="section-text">
+        Вставьте текст эссе в виджет ниже. Бот проведёт анализ по дескрипторам,
+        выставит баллы по каждому критерию и вернёт структурированную обратную связь.
+      </p>
 
-    <table>
-      <tr>
-        <th>Критерий</th>
-        <th>Балл</th>
-        <th>Комментарий</th>
-      </tr>
-      <tr>
-        <td>Соответствие теме</td>
-        <td>5/5</td>
-        <td>Тема раскрыта полностью</td>
-      </tr>
-      <tr>
-        <td>Структура</td>
-        <td>4/5</td>
-        <td>Есть структура, но переходы можно усилить</td>
-      </tr>
-      <tr>
-        <td>Аргументация</td>
-        <td>4/5</td>
-        <td>Есть два аргумента, но один слабее</td>
-      </tr>
-    </table>
+      <div class="steps">
+        <h3>Как это работает</h3>
+        <div class="step-grid">
+          <div class="step">
+            <div class="step-num">1</div>
+            <p>Ученик вставляет эссе в чат и отправляет текст на проверку.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <p>Модель оценивает эссе по дескрипторам и анализирует структуру работы.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <p>Система возвращает summary, таблицу баллов и рекомендации по улучшению.</p>
+          </div>
+        </div>
+      </div>
 
-    <div class="total">Общий балл: 27/30</div>
+      <div class="chat-shell">
+        <div class="chat-head">
+          <div>
+            <h3>Виджет чат-бота</h3>
+            <p>Flowise chatbot для проверки школьных эссе</p>
+          </div>
+          <div class="badge">Flowise</div>
+        </div>
 
-    <div class="recommend">
-      <b>Рекомендации:</b>
-      <ol>
-        <li>Усилить аргументы</li>
-        <li>Добавить связки</li>
-        <li>Сделать вывод сильнее</li>
-      </ol>
-    </div>
-  </div>
+        <div class="chat-area">
+          <flowise-fullchatbot></flowise-fullchatbot>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <aside class="card">
+      <div style="display:flex; align-items:end; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+        <div>
+          <div class="section-label">Результат проверки</div>
+          <h2 class="section-title" style="margin-bottom:0;">Summary обратной связи</h2>
+        </div>
+        <div class="score-box">
+          <small>Общий балл</small>
+          <strong>27/30</strong>
+        </div>
+      </div>
 
-<!-- ТВОЙ FLOWISE КОД -->
-<script type="module">
-  import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
+      <div class="summary-box">
+        <h3>Краткая обратная связь</h3>
+        <p>
+          Работа в целом демонстрирует понимание темы и уверенную авторскую позицию,
+          однако требует доработки в части аргументации и связности между абзацами.
+        </p>
+        <ul>
+          <li>Сильная сторона: тема раскрыта и позиция автора выражена ясно.</li>
+          <li>Зона роста: один из аргументов нуждается в более точном примере и пояснении.</li>
+          <li>Рекомендация: усилить переходы между частями эссе и сделать вывод более обобщающим.</li>
+        </ul>
+      </div>
 
-  Chatbot.initFull({
-    chatflowid: "5d74f1be-56bf-4b59-aaea-e88eaead8da2",
-    apiHost: "https://cloud.flowiseai.com",
-  })
-</script>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Критерий</th>
+              <th>Балл</th>
+              <th>Комментарий</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Соответствие теме</td>
+              <td>5/5</td>
+              <td>Тема раскрыта полно и точно.</td>
+            </tr>
+            <tr>
+              <td>Структура эссе</td>
+              <td>4/5</td>
+              <td>Есть вступление, основная часть и заключение, но переходы можно усилить.</td>
+            </tr>
+            <tr>
+              <td>Позиция автора</td>
+              <td>5/5</td>
+              <td>Авторская позиция выражена ясно.</td>
+            </tr>
+            <tr>
+              <td>Логика и последовательность</td>
+              <td>4/5</td>
+              <td>Мысли изложены последовательно, местами не хватает связок.</td>
+            </tr>
+            <tr>
+              <td>Аргументация</td>
+              <td>4/5</td>
+              <td>Есть два аргумента, но один пример можно раскрыть глубже.</td>
+            </tr>
+            <tr>
+              <td>Грамотность речи</td>
+              <td>5/5</td>
+              <td>Серьёзных ошибок почти нет.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
+      <div class="prompt-box">
+        <h3>Как должен выглядеть ответ бота</h3>
+        <pre>Сначала — краткое summary в 3–4 предложениях.
+
+Затем — таблица в формате Markdown:
+
+| Критерий | Балл | Комментарий |
+|---|---:|---|
+| Соответствие теме | X/5 | ... |
+| Структура эссе | X/5 | ... |
+| Позиция автора | X/5 | ... |
+| Логика и последовательность | X/5 | ... |
+| Аргументация | X/5 | ... |
+| Грамотность речи | X/5 | ... |
+
+После таблицы:
+Общий балл: X/30
+Рекомендации:
+1. ...
+2. ...
+3. ...</pre>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    Платформа предназначена для учебной проверки эссе по школьным дескрипторам.
+  </footer>
+
+  <script type="module">
+    import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
+
+    Chatbot.initFull({
+      chatflowid: "5d74f1be-56bf-4b59-aaea-e88eaead8da2",
+      apiHost: "https://cloud.flowiseai.com",
+    });
+  </script>
 </body>
 </html>
